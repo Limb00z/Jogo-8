@@ -1,0 +1,47 @@
+*{
+    border: 0;
+    margin: 0;
+    padding: 0;
+}
+
+body{
+    background-color: #555; 
+    
+}
+
+.panel{
+    border-radius: 10px;
+    height: 305px;
+    width: 305px;
+}
+
+.modal{
+    position: absolute;
+    transition: all 0.5s;
+}
+
+#startScreen{
+    background: url('./img/intro.png');
+    opacity: 1;
+    z-index: 1;
+}
+
+#container{
+    background-color: #ccc;
+    border: outset; /*Outset faz com que o elemento tenha alto relevo, como se estivesse saltando pra fora*/
+    box-shadow: 2px 2px 50px rgba(0,0,0,1);
+    margin: 50px auto;
+    position: relative;
+}
+
+.tile{
+    width: 90px;
+    height: 90px;
+    position: absolute;
+    transition: left 1s, top 1s
+}
+
+.tile:hover{
+    border: inset; /*inset, faz o baixo relevo, como se ouvesse um fundo. inversamente ao outset*/
+    border-radius: 10px;
+}
