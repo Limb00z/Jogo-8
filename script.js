@@ -1,7 +1,11 @@
 (function(){
-    var tiles = []; // arrays com um conjunto de tile
+    var tiles = [], // arrays com um conjunto de tile
+        answer = []; 
+
     var startScreen = document.querySelector("#startScreen");
         startScreen.addEventListener('click', startGame, false);
+
+    var overScreen = document.querySelector("#overScreen");
 
 
     function init(){
@@ -9,8 +13,12 @@
             var tile = document.querySelector("#n"+i); //aqui estou selecionando os quadradospelo id +i onde i foi declarado na linha acima.
             tile.style.background = "url('img/n"+i+".png')"; //aproveitando para chamar a imagem
             tiles.push(tile); //inserindo isso(elemento) no array criado lá no início.
+            tile.addEventListener("click",moveTile,false);
         }
         tiles.push(null); //inserindo um elemento vazio, no array tiles, para poder mexer as peças.
+        
+        answer = tiles;
+        
         render();
     };
 
@@ -36,9 +44,64 @@
         }
     };
 
+    function moveTile(){
+      var index = tiles.indexOf(this);
+      if(index % 3 !== 0){
+        if(!tiles[index-1]){
+            tiles[index-1] = this;
+            tiles[index] = null;
+        }
+      }
+      if(index % 3 !== 2){
+        if(!tiles[index+1]){
+            tiles[index+1] = this;
+            tiles[index] = null;
+        }
+      }
+      if(index > 2 ){
+        if(!tiles[index-3]){
+            tiles[index-3] = this;
+            tiles[index] = null;
+        }
+      }
+      if(index < 6){
+        if(!tiles[index+3]){
+            tiles[index+3] = this;
+            tiles[index] = null;
+        }
+      }
+      render();
+
+      if (chkWin()){
+        gameOver();
+      }
+
+    }
+
+    function chkWin() {
+        for(var i in tiles){
+            var a = tiles[i];
+            var b = answer[i];
+            if(a!==b){
+                return false;
+            }
+        }
+        return true;
+    };
+
+    function gameOver() {
+        overScreen.style.opacity = "1";
+        overScreen.style.zIndex = "1";
+        alert("Parabéns, você ganhou!")
+        setTimeout(function(){
+            overScreen.addEventListener("click",startGame, false)
+        }, 500)
+    };
+
     function randomSort(oldArray){
         var newArray;
         var cont = 0;
+
         do{
             newArray = [];
             while(newArray.length < oldArray.length){
@@ -57,14 +120,14 @@
         var inversions = 0;
         var len = array.length;
 
-        for(var i = 0; i <length -1; i++){
+        for(var i = 0; i < len -1; i++){
             for(var j = i+1; j < len; j++){
-                if(array[i]&& array[j] && array[i].data.value <array[j].data.set.value){
+                if(array[i] && array[j] && array[i].dataset.value < array[j].dataset.value){
                     inversions++;
                 }
             }
         }
-        return inversions%2 === 0;
+        return inversions % 2 === 0;
     };
 
     function startGame(){
